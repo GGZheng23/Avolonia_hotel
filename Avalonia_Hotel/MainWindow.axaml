@@ -1,0 +1,162 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Avalonia_Hotel.MainWindow"
+        Title="Avalonia_Hotel"
+        xmlns:local="clr-namespace:Avalonia_Hotel"
+        x:DataType="local:ViewModel">
+        
+                <TabControl HorizontalAlignment="Left" 
+                            TabStripPlacement="Left"
+                            Background="White"> <!---->
+                        <TabItem Header="Prenotare" Margin="10">
+                                <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="10" 
+                                                        Width="120">Nome</TextBlock>
+                                                <TextBlock Margin="10" 
+                                                        Width="120">Cognome</TextBlock>
+                                                <TextBlock Margin="10" 
+                                                        Width="120">Sesso</TextBlock>
+                                                <TextBlock Margin="10" 
+                                                        Width="120">Numero persone</TextBlock>
+                                                <TextBlock Margin="10" 
+                                                           Width="120">Telefono</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                                <TextBox Margin="10" Watermark="nome:"
+                                                        Width="120"
+                                                        Text="{Binding Nome}"/>
+                                                <TextBox Margin="10" Watermark="cognome:"
+                                                        Width="120"
+                                                        Text="{Binding Cognome}"/>
+                                                <TextBox Margin="10" Watermark="sesso:"
+                                                        Width="120"
+                                                        Text="{Binding Sesso}"/>
+                                                <TextBox Margin="10" 
+                                                        Width="120"
+                                                        Text="{Binding NumPersone}"/>
+                                                <TextBox Margin="10" Watermark="tel:"
+                                                         Width="120"
+                                                         Text="{Binding Telefono}"/>
+                                        </StackPanel>
+                                        <StackPanel Margin="20" 
+                                                    Spacing="10"
+                                                    Orientation="Horizontal">
+                                                <StackPanel Margin="20" 
+                                                        Spacing="10"
+                                                        Orientation="Vertical">
+                                                        <Calendar Name="Calendar2"
+                                                                SelectionMode="MultipleRange"/>
+                                                        <TextBlock Text="{Binding StartDate, StringFormat='Data Inizio: {0:dd/MM/yyyy}'}" />
+                                                        <TextBlock Text="{Binding EndDate, StringFormat='Data Fine: {0:dd/MM/yyyy}'}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="20" 
+                                                        Spacing="10"
+                                                        Orientation="Vertical">
+                                                        <TextBlock Text="Camere disponibili" />
+                                                        <ComboBox x:Name="cmbCamere" Width="200" Height="30" 
+                                                                ItemsSource="{Binding ListaCamereDisponibili}"
+                                                                SelectedItem="{Binding CameraSelezionataComboBox}">
+                                                        </ComboBox>
+                                                        <ListBox x:Name="lstCamereSelezionate"
+                                                                 ItemsSource="{Binding ListaCamereSelezionate}"
+                                                                 SelectedItem="{Binding CameraSelezionataListBox}"
+                                                                 Height="200"
+                                                                 Width="250"
+                                                                 Margin="10"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="20" 
+                                                            Spacing="10"
+                                                            Orientation="Vertical">
+                                                        <Button Margin="10"
+                                                                Width="90"
+                                                                Content="Seleziona"
+                                                                Command="{Binding AggiungiCameraCommand}"
+                                                                CommandParameter="{Binding CameraSelezionataComboBox}"/>
+                                                        <Button Margin="10"
+                                                                Width="90"
+                                                                Content="Elimina"
+                                                                Command="{Binding EliminaCameraCommand}"
+                                                                CommandParameter="{Binding CameraSelezionataListBox}"/>
+                                                        <Button Margin="10"
+                                                                Width="90"
+                                                                Content="Svuota"
+                                                                Command="{Binding SvuotaCommand}"
+                                                                />
+                                                </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Width="650">
+                                                <Button HorizontalAlignment="Left"
+                                                        Width="90"
+                                                        Content="Conferma"
+                                                        Command="{Binding ConfermaCommand }"
+                                                        CommandParameter="{Binding }"/>
+                                                <TextBlock
+                                                        Text="{Binding TxtOutput}"
+                                                        Margin="10">Output</TextBlock>
+                                        </StackPanel>
+                                </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Prenotazioni" Margin="10">
+                                <StackPanel Orientation="Vertical">
+                                        <DataGrid Margin="10"
+                                                  IsReadOnly="False"
+                                                  Background="White"
+                                                  AutoGenerateColumns="True"
+                                                  ItemsSource="{Binding ListaPrenotazioni}"
+                                                  SelectedItem="{Binding PrenotazioneSelezionataDataGrid}">
+                                                <i:Interaction.Behaviors>
+                                                <ia:EventTriggerBehavior EventName="CellPointerPressed" >
+                                                <ia:InvokeCommandAction
+                                                    Command="{Binding CellClickCommand}"
+                                                    PassEventArgsToCommand="True" />
+                                                </ia:EventTriggerBehavior>
+                                                </i:Interaction.Behaviors>
+                                        </DataGrid>
+                                        <StackPanel Orientation="Horizontal">
+                                                <Button Width="90" Margin="10"
+                                                        Content="Modifica"
+                                                        Command="{Binding ModificaCommand  }"
+                                                        CommandParameter="{Binding }"/>
+                                                <Button Width="90" Margin="10"
+                                                        Content="Elimina"
+                                                        Command="{Binding EliminaCommand  }"
+                                                        CommandParameter="{Binding }"/>
+                                                <TextBlock Margin="10"
+                                                           Text="{Binding TxtOutput2}"/>
+                                        </StackPanel>
+                                        <TextBlock Margin="10"
+                                                   Text="{Binding PrenotazioneSelezionataDataGrid}"/>
+                                        <DataGrid  Margin="10"
+                                                   IsReadOnly="True"
+                                                   Background="White"
+                                                   AutoGenerateColumns="True"
+                                                   ItemsSource="{Binding ListaDettagliPrenotazioni}
+                                                  "
+                                        />
+                                </StackPanel>
+                        </TabItem>
+                        <TabItem Header="Camere" Margin="10">
+                                <StackPanel Orientation="Vertical">
+                                        <StackPanel Orientation="Horizontal">
+                                                <DataGrid Height="250" 
+                                                        Width="300" 
+                                                        IsReadOnly="True"
+                                                        Background="White"
+                                                        AutoGenerateColumns="True"
+                                                        ItemsSource="{Binding ListaCamere}"
+                                                        SelectedItem="{Binding CameraSelezionataDataGrid}"/>
+                                                <Calendar x:Name="Calendar" 
+                                                        Background="White"/>
+                                        </StackPanel>
+                                </StackPanel>
+                                
+                        </TabItem>
+                </TabControl>
+</Window>
